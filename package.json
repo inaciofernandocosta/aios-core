@@ -103,16 +103,16 @@
     "vite-style",
     "automation"
   ],
-  "author": "Synkra AIOS Team",
+  "author": "Inacio Fernando Costa",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SynkraAI/aios-core.git"
+    "url": "git+https://github.com/inaciofernandocosta/aios-core.git"
   },
   "bugs": {
-    "url": "https://github.com/SynkraAI/aios-core/issues"
+    "url": "https://github.com/inaciofernandocosta/aios-core/issues"
   },
-  "homepage": "https://github.com/SynkraAI/aios-core#readme",
+  "homepage": "https://github.com/inaciofernandocosta/aios-core#readme",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
