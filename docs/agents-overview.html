@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Synkra AIOS — Agents Overview</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--border:#2e3250;--accent:#6c63ff;--accent2:#00d4aa;--text:#e8eaf6;--muted:#8b90b8;--master-bg:#1e1535;--master-border:#7c3aed;--master-accent:#a78bfa;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+header{background:linear-gradient(135deg,#0f1117,#1a1030);border-bottom:1px solid var(--border);padding:18px 40px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
+header h1{font-size:20px;font-weight:800;letter-spacing:-.5px;}
+header h1 span{color:var(--master-accent);}
+header .sub{font-size:12px;color:var(--muted);margin-top:2px;}
+header .badge{margin-left:auto;background:var(--master-bg);border:1px solid var(--master-border);color:var(--master-accent);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+.page{padding:40px;max-width:1600px;margin:0 auto;}
+.master-wrap{display:flex;justify-content:center;margin-bottom:0;}
+.master-card{background:linear-gradient(135deg,var(--master-bg),#1a1040);border:2px solid var(--master-border);border-radius:20px;padding:28px 36px;width:500px;position:relative;box-shadow:0 0 40px rgba(124,58,237,.2),0 8px 32px rgba(0,0,0,.4);cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.master-card:hover{transform:translateY(-4px);box-shadow:0 0 60px rgba(124,58,237,.35),0 16px 48px rgba(0,0,0,.5);}
+.master-card .crown{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 0 10px rgba(167,139,250,.8));}
+.master-card .ah{display:flex;align-items:center;gap:16px;margin-top:8px;}
+.master-card .av{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid var(--master-accent);box-shadow:0 0 20px rgba(167,139,250,.4);flex-shrink:0;}
+.master-card .an{font-size:22px;font-weight:800;color:var(--master-accent);}
+.master-card .ap{font-size:12px;color:var(--muted);margin-top:2px;}
+.master-card .at{display:inline-block;background:rgba(124,58,237,.2);border:1px solid var(--master-border);color:var(--master-accent);padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;margin-top:6px;text-transform:uppercase;letter-spacing:.5px;}
+.master-card .role{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5;border-top:1px solid rgba(124,58,237,.3);padding-top:12px;}
+.master-card .cmds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.ctag{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);color:var(--master-accent);padding:3px 8px;border-radius:6px;font-size:10px;font-family:monospace;font-weight:600;}
+.conn-v{width:2px;background:linear-gradient(to bottom,var(--master-border),var(--accent));margin:0 auto;height:36px;}
+.conn-h{display:flex;justify-content:center;position:relative;}
+.conn-h::before{content:'';position:absolute;top:0;left:5%;width:90%;height:2px;background:linear-gradient(to right,transparent,var(--accent),transparent);}
+.conn-dots{display:flex;justify-content:space-around;width:90%;margin:0 auto;}
+.conn-dots .dl{width:2px;height:28px;background:var(--accent);opacity:.4;}
+.sec-title{text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin:20px 0 24px;display:flex;align-items:center;gap:12px;}
+.sec-title::before,.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;position:relative;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ca,var(--accent));border-radius:16px 16px 0 0;}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);border-color:var(--ca,var(--accent));}
+.card .ch{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.card .av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--ca,var(--accent));background:var(--surface2);flex-shrink:0;}
+.card .an{font-size:16px;font-weight:700;}
+.card .ap{font-size:11px;color:var(--muted);}
+.card .at{display:inline-block;padding:2px 8px;border-radius:8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--ba,rgba(108,99,255,.12));color:var(--ca,var(--accent));border:1px solid var(--ca,var(--accent));margin-top:4px;}
+.card .sl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:10px 0 5px;font-weight:700;}
+.card .rt{font-size:11px;color:var(--muted);line-height:1.5;}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.tag{background:#1e2235;border:1px solid var(--border);color:var(--muted);padding:2px 6px;border-radius:4px;font-size:9px;font-family:monospace;}
+.tag.c{color:var(--ca,var(--accent));border-color:var(--ca,var(--accent));background:rgba(108,99,255,.07);}
+.tag.t{color:var(--accent2);border-color:rgba(0,212,170,.35);background:rgba(0,212,170,.05);}
+.sc{position:absolute;top:12px;right:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:2px 7px;border-radius:7px;font-size:9px;font-family:monospace;}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:580px;width:90%;max-height:80vh;overflow-y:auto;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.6);}
+.mc{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.mc:hover{background:var(--border);color:var(--text);}
+.modal h2{font-size:22px;font-weight:800;margin-bottom:4px;}
+.modal .ms{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.msec{margin-top:18px;}
+.msec h3{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+.msec p{font-size:12px;color:var(--muted);line-height:1.6;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+@media(max-width:768px){.page{padding:20px;}.master-card{width:100%;}header{padding:14px 20px;}}
+</style>
+</head>
+<body>
+<header>
+  <div style="font-size:26px">🤖</div>
+  <div>
+    <h1>Synkra <span>AIOS</span></h1>
+    <div class="sub">Agent Intelligence Operating System — Squad Overview</div>
+  </div>
+  <div class="badge">12 Agents Active</div>
+</header>
+
+<div class="page">
+  <div class="master-wrap">
+    <div class="master-card" onclick="openModal('aios-master')">
+      <div class="crown">👑</div>
+      <div class="ah">
+        <div class="av">👑</div>
+        <div>
+          <div class="an">Orion</div>
+          <div class="ap">♌ Leo · Orchestrator</div>
+          <div class="at">AIOS Master Orchestrator</div>
+        </div>
+      </div>
+      <div class="role">Universal executor de todas as capacidades AIOS — cria componentes do framework, orquestra workflows e executa qualquer tarefa diretamente. Único agente com autoridade meta-framework.</div>
+      <div class="cmds">
+        <span class="ctag">*create</span><span class="ctag">*workflow</span><span class="ctag">*plan</span><span class="ctag">*ids check</span><span class="ctag">*validate-agents</span><span class="ctag">*run-workflow</span><span class="ctag">*correct-course</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="conn-v"></div>
+  <div class="conn-h">
+    <div class="conn-dots">
+      <div class="dl"></div><div class="dl"></div><div class="dl"></div><div class="dl"></div>
+      <div class="dl"></div><div class="dl"></div><div class="dl"></div><div class="dl"></div>
+      <div class="dl"></div><div class="dl"></div><div class="dl"></div>
+    </div>
+  </div>
+  <div style="height:8px"></div>
+
+  <div class="sec-title">Agentes Especializados</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="modal-ov" id="mOv" onclick="closeOv(event)">
+  <div class="modal" id="mContent">
+    <button class="mc" onclick="closeMod()">✕</button>
+    <div id="mBody"></div>
+  </div>
+</div>
+
+<script>
+const agents=[
+{id:'architect',icon:'🏛️',name:'Aria',shortcut:'@architect',title:'Architect',arch:'Visionary',zodiac:'♐ Sagittarius',ca:'#3b82f6',
+ role:'Holistic System Architect & Full-Stack Technical Leader',
+ identity:'Master of holistic application design que conecta frontend, backend, infraestrutura e tudo entre eles.',
+ whenToUse:'Arquitetura de sistema, seleção de stack tecnológico, design de API, segurança, performance, deployment.',
+ commands:['*create-full-stack-architecture','*create-front-end-architecture','*analyze-project-structure','*document-project','*research','*validate-tech-preset','*map-codebase'],
+ tools:['exa','context7','git','supabase-cli','railway-cli','coderabbit'],
+ collab:['@data-engineer (Dara)','@ux-design-expert (Uma)','@pm (Morgan)'],
+ delegates:['@devops — git push & PRs']},
+{id:'analyst',icon:'🔍',name:'Atlas',shortcut:'@analyst',title:'Business Analyst',arch:'Decoder',zodiac:'♏ Scorpio',ca:'#f59e0b',
+ role:'Insightful Analyst & Strategic Ideation Partner',
+ identity:'Analista estratégico especializado em brainstorming, pesquisa de mercado, análise competitiva e briefing.',
+ whenToUse:'Pesquisa de mercado, análise competitiva, pesquisa de usuário, facilitação de brainstorming, estudos de viabilidade.',
+ commands:['*brainstorm','*perform-market-research','*create-competitor-analysis','*create-project-brief','*research-prompt','*elicit'],
+ tools:['google-workspace','exa','context7'],
+ collab:['@pm (Morgan)','@po (Pax)'],
+ delegates:[]},
+{id:'pm',icon:'📋',name:'Morgan',shortcut:'@pm',title:'Product Manager',arch:'Strategist',zodiac:'♑ Capricorn',ca:'#10b981',
+ role:'Investigative Product Strategist & Market-Savvy PM',
+ identity:'Product Manager especializado em criação de documentos e pesquisa de produto.',
+ whenToUse:'Criação de PRD, gerenciamento de épicos, estratégia de produto, priorização de features, roadmap.',
+ commands:['*create-prd','*create-brownfield-prd','*create-epic','*create-story','*gather-requirements','*write-spec','*execute-epic'],
+ tools:[],
+ collab:['@po (Pax)','@sm (River)','@architect (Aria)'],
+ delegates:['@sm — criação de stories','@analyst — pesquisa','@aios-master — course corrections']},
+{id:'po',icon:'🎯',name:'Pax',shortcut:'@po',title:'Product Owner',arch:'Balancer',zodiac:'♎ Libra',ca:'#ec4899',
+ role:'Technical Product Owner & Process Steward',
+ identity:'Product Owner que valida coesão de artefatos e orienta mudanças significativas.',
+ whenToUse:'Gerenciamento de backlog, refinamento de stories, critérios de aceitação, planejamento de sprint, priorização.',
+ commands:['*validate-story-draft','*close-story','*backlog-review','*backlog-prioritize','*backlog-schedule','*stories-index'],
+ tools:['github-cli','context7'],
+ collab:['@sm (River)','@pm (Morgan)','@qa (Quinn)'],
+ delegates:['@sm — criação de stories','@pm — criação de épicos']},
+{id:'sm',icon:'🌊',name:'River',shortcut:'@sm',title:'Scrum Master',arch:'Facilitator',zodiac:'♓ Pisces',ca:'#06b6d4',
+ role:'Technical Scrum Master — Story Preparation Specialist',
+ identity:'Expert em criação de stories que prepara histórias detalhadas e acionáveis para desenvolvedores AI.',
+ whenToUse:'Criação de user stories a partir de PRD, validação, critérios de aceitação, refinamento, planejamento de sprint.',
+ commands:['*draft','*story-checklist'],
+ tools:['git','clickup','context7'],
+ collab:['@dev (Dex)','@po (Pax)'],
+ delegates:['@devops — push & PRs','@aios-master — course corrections']},
+{id:'dev',icon:'💻',name:'Dex',shortcut:'@dev',title:'Full Stack Developer',arch:'Builder',zodiac:'♒ Aquarius',ca:'#8b5cf6',
+ role:'Expert Senior Software Engineer & Implementation Specialist',
+ identity:'Expert que implementa stories lendo requisitos e executando tarefas sequencialmente com testes abrangentes.',
+ whenToUse:'Implementação de código, debugging, refatoração e boas práticas de desenvolvimento.',
+ commands:['*develop','*run-tests','*build-autonomous','*build-resume','*apply-qa-fixes','*create-service','*waves','*gotcha'],
+ tools:['coderabbit','git','context7','supabase','n8n','browser','ffmpeg'],
+ collab:['@qa (Quinn)','@sm (River)'],
+ delegates:['@devops — git push & PRs']},
+{id:'qa',icon:'✅',name:'Quinn',shortcut:'@qa',title:'Test Architect & Quality Advisor',arch:'Guardian',zodiac:'♍ Virgo',ca:'#22c55e',
+ role:'Test Architect with Quality Advisory Authority',
+ identity:'Test architect que fornece avaliação de qualidade abrangente e recomendações acionáveis sem bloquear progresso.',
+ whenToUse:'Revisão de arquitetura de testes, quality gates, melhoria de código, análise de cobertura, segurança.',
+ commands:['*review','*gate','*code-review','*nfr-assess','*risk-profile','*security-check','*test-design','*create-suite'],
+ tools:['browser','coderabbit','git','context7','supabase'],
+ collab:['@dev (Dex)','CodeRabbit'],
+ delegates:[]},
+{id:'devops',icon:'⚡',name:'Gage',shortcut:'@devops',title:'GitHub Repository Manager & DevOps',arch:'Operator',zodiac:'♈ Aries',ca:'#f97316',
+ role:'GitHub Repository Guardian & Release Manager',
+ identity:'Guardião da integridade do repositório. ÚNICO agente autorizado a fazer git push para repositório remoto.',
+ whenToUse:'Git push (exclusivo), criação de PRs, gerenciamento de versões semânticas, CI/CD, limpeza de repositório.',
+ commands:['*pre-push','*push','*create-pr','*release','*version-check','*configure-ci','*cleanup','*setup-github'],
+ tools:['coderabbit','github-cli','git','docker-gateway'],
+ collab:['@dev (Dex)','@sm (River)','@architect (Aria)'],
+ delegates:[]},
+{id:'data-engineer',icon:'📊',name:'Dara',shortcut:'@data-engineer',title:'Database Architect & Operations Engineer',arch:'Sage',zodiac:'♊ Gemini',ca:'#14b8a6',
+ role:'Master Database Architect & Reliability Engineer',
+ identity:'Guardião da integridade de dados com expertise em PostgreSQL e Supabase.',
+ whenToUse:'Design de banco de dados, schema, Supabase, políticas RLS, migrações, otimização de queries.',
+ commands:['*create-schema','*create-rls-policies','*apply-migration','*security-audit','*analyze-performance','*snapshot','*rollback','*setup-database'],
+ tools:['supabase-cli','psql','pg_dump','postgres-explain-analyzer','coderabbit'],
+ collab:['@architect (Aria)','@dev (Dex)'],
+ delegates:[]},
+{id:'ux-design-expert',icon:'🎨',name:'Uma',shortcut:'@ux-design-expert',title:'UX/UI Designer & Design System Architect',arch:'Empathizer',zodiac:'♋ Cancer',ca:'#e879f9',
+ role:'UX/UI Designer & Design System Architect',
+ identity:'Parceira de design completa combinando empatia de usuário com pensamento sistêmico. Metodologia Atomic Design.',
+ whenToUse:'Pesquisa de usuário, wireframes, sistemas de design, tokens, componentes atômicos, acessibilidade WCAG.',
+ commands:['*research','*wireframe','*audit','*tokenize','*build','*a11y-check','*calculate-roi','*generate-ui-prompt'],
+ tools:['21st-dev-magic','browser'],
+ collab:['@architect (Aria)','@dev (Dex)'],
+ delegates:[]},
+{id:'squad-creator',icon:'🏗️',name:'Craft',shortcut:'@squad-creator',title:'Squad Creator',arch:'Builder',zodiac:'♑ Capricorn',ca:'#fb923c',
+ role:'Squad Architect & Builder',
+ identity:'Expert que cria squads bem estruturados que funcionam em sinergia com o aios-core.',
+ whenToUse:'Criar, validar, publicar e gerenciar squads. Design de squads a partir de documentação.',
+ commands:['*design-squad','*create-squad','*validate-squad','*list-squads','*analyze-squad','*extend-squad','*migrate-squad'],
+ tools:['git','context7'],
+ collab:['@dev (Dex)','@qa (Quinn)','@devops (Gage)'],
+ delegates:[]},
+];
+
+const masterData={
+ id:'aios-master',icon:'👑',name:'Orion',shortcut:'@aios-master',title:'AIOS Master Orchestrator & Framework Developer',arch:'Orchestrator',zodiac:'♌ Leo',ca:'#a78bfa',
+ role:'Master Orchestrator, Framework Developer & AIOS Method Expert',
+ identity:'Universal executor de todas as capacidades Synkra AIOS — cria componentes do framework, orquestra workflows e executa qualquer tarefa diretamente.',
+ whenToUse:'Operações meta-framework, orquestração de workflows complexos, criação/modificação de agentes, tasks e workflows, execução de qualquer tarefa de qualquer agente.',
+ commands:['*create','*modify','*workflow','*plan','*ids check','*ids impact','*ids register','*validate-agents','*run-workflow','*correct-course','*analyze-framework','*list-components','*create-next-story','*task','*execute-checklist','*sync-registry-intel'],
+ tools:['security-checker.js','yaml-validator.js'],
+ collab:['Todos os agentes — pode executar qualquer tarefa de qualquer agente'],
+ delegates:['@pm — criação de épicos/stories','@analyst — brainstorming','@qa — test suites','@architect — AI prompts']
+};
+
+function renderCard(a){
+  const d=document.createElement('div');
+  d.className='card';
+  d.style.setProperty('--ca',a.ca);
+  d.onclick=()=>openModal(a.id);
+  const cmds=a.commands.slice(0,5).map(c=>`<span class="tag c">${c}</span>`).join('');
+  const tools=a.tools.slice(0,4).map(t=>`<span class="tag t">${t}</span>`).join('');
+  d.innerHTML=`
+    <span class="sc">${a.shortcut}</span>
+    <div class="ch">
+      <div class="av">${a.icon}</div>
+      <div>
+        <div class="an">${a.name}</div>
+        <div class="ap">${a.zodiac} · ${a.arch}</div>
+        <div class="at">${a.title}</div>
+      </div>
+    </div>
+    <div class="sl">Papel</div>
+    <div class="rt">${a.role}</div>
+    <div class="sl">Comandos Principais</div>
+    <div class="tags">${cmds}${a.commands.length>5?`<span class="tag">+${a.commands.length-5}</span>`:''}</div>
+    ${tools?`<div class="sl">Ferramentas</div><div class="tags">${tools}</div>`:''}
+  `;
+  return d;
+}
+
+document.getElementById('grid').append(...agents.map(renderCard));
+
+function getAgentData(id){
+  if(id==='aios-master') return masterData;
+  return agents.find(a=>a.id===id);
+}
+
+function openModal(id){
+  const a=getAgentData(id);
+  if(!a) return;
+  const cmds=a.commands.map(c=>`<span class="tag c" style="--ca:${a.ca}">${c}</span>`).join('');
+  const tools=a.tools.map(t=>`<span class="tag t">${t}</span>`).join('');
+  const collab=a.collab.map(c=>`<span class="tag">${c}</span>`).join('');
+  const dels=a.delegates.map(d=>`<span class="tag">${d}</span>`).join('');
+  document.getElementById('mBody').innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:4px">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--surface2);border:2px solid ${a.ca};display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${a.icon}</div>
+      <div>
+        <h2 style="color:${a.ca}">${a.name}</h2>
+        <div class="ms">${a.zodiac} · ${a.arch} · <code style="font-size:11px;background:var(--surface2);padding:1px 6px;border-radius:4px">${a.shortcut}</code></div>
+      </div>
+    </div>
+    <div style="display:inline-block;background:rgba(0,0,0,.3);border:1px solid ${a.ca};color:${a.ca};padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">${a.title}</div>
+    <div class="msec"><h3>Papel</h3><p>${a.role}</p></div>
+    <div class="msec"><h3>Identidade</h3><p>${a.identity}</p></div>
+    <div class="msec"><h3>Quando Usar</h3><p>${a.whenToUse}</p></div>
+    <div class="msec"><h3>Todos os Comandos</h3><div class="tags" style="margin-top:4px">${cmds}</div></div>
+    ${tools?`<div class="msec"><h3>Ferramentas</h3><div class="tags" style="margin-top:4px">${tools}</div></div>`:''}
+    ${collab?`<div class="msec"><h3>Colabora Com</h3><div class="tags" style="margin-top:4px">${collab}</div></div>`:''}
+    ${dels?`<div class="msec"><h3>Delega Para</h3><div class="tags" style="margin-top:4px">${dels}</div></div>`:''}
+  `;
+  document.getElementById('mOv').classList.add('open');
+}
+function closeOv(e){if(e.target===document.getElementById('mOv'))closeMod();}
+function closeMod(){document.getElementById('mOv').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
+</script>
+</body>
+</html>
